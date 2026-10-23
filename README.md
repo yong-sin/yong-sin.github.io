@@ -53,4 +53,16 @@ If browser folder upload proves awkward, use GitHub Desktop to commit the unzipp
 - The project descriptions separate own work and team work.
 - Creative gallery acknowledges AI-generated backgrounds; no unsupported tree-CAD claim.
 - Not included: original full reports, phone number, visa information, student IDs, internal competition rules.
-- Check photography/video permissions for people shown before publishing publicly.
+- TRC4407 now includes the three original HMI interface types and the full FSM diagram, with additional screenshots showing alternative diagnostics states. Image crops provide closer views, while full source screenshots are preserved in that project's assets folder.
+
+## October 23 revision 3
+
+- All eight project pages and the Creative CAD gallery are included.
+- Homepage has text-only project cards; the sky-and-grass theme background is retained.
+- Updated About and contact details, with Yong Sin's available CV linked.
+- Added Warman and TRC2001 team photos inside their respective project pages.
+- Updated TRC2001 to a team of eight with PLC and design as the main personal contributions.
+- Removed irrelevant media and compression notes and adjusted page alignment / overflow.
+- Kept the complete TRC4407 HMI screenshots and FSM diagram.
+- A separate resume PDF was not available, so there is only a CV link.
+- No background music is included in this revision.
