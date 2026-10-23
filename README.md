@@ -54,4 +54,3 @@ If browser folder upload proves awkward, use GitHub Desktop to commit the unzipp
 - Creative gallery acknowledges AI-generated backgrounds; no unsupported tree-CAD claim.
 - Not included: original full reports, phone number, visa information, student IDs, internal competition rules.
 - Check photography/video permissions for people shown before publishing publicly.
-- If you can export the original TRC4407 HMI screens and full FSM diagram as separate files, add them to that page's image gallery later. They were present as chat images but weren't available as mounted standalone file assets for this packaging run.
