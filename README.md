@@ -66,3 +66,27 @@ If browser folder upload proves awkward, use GitHub Desktop to commit the unzipp
 - Kept the complete TRC4407 HMI screenshots and FSM diagram.
 - A separate resume PDF was not available, so there is only a CV link.
 - No background music is included in this revision.
+
+
+## Music player and resume (new)
+
+- `assets/docs/Yong_Sin_Ong_Resume.pdf` is linked from the homepage About Me section, next to the CV.
+- The homepage includes a floating `♫ Music` button at the bottom-right. Clicking it opens a YouTube embed for https://youtu.be/52qj0foHFvo. If audio does not start automatically, press Play in the embed.
+- The player stops when closed, and normal navigation to a different project page ends playback. The music button is currently only on the homepage.
+- The video remains on YouTube; no music was downloaded or re-hosted in the website files. An embed might fail if the video's uploader disallows embedding.
+
+
+## Music now continues between project pages
+
+The music player is attached outside `#site-view`. Internal HTML pages swap into
+`#site-view` without a full browser refresh, so the player iframe remains mounted.
+This works when navigating via the site's links to the 8 projects, homepage and
+Creative CAD gallery, including the browser Back/Forward buttons.
+
+Directly reloading a page, following external links, closing the player, opening
+PDFs or using a normal new browser tab can still interrupt playback. YouTube
+may require pressing Play due to browser autoplay restrictions.
+
+To patch an already-deployed site, upload all 10 `index.html` files plus
+`assets/js/site.js`. Do not change the other assets. The complete ZIP is also
+provided.
