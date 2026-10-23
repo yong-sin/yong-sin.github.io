@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Engineering project portfolio and selected work." />
+  <title>Your Name | Engineering Portfolio</title>
+  <style>
+    :root {
+      --bg: #0c1521;
+      --surface: #152234;
+      --surface-2: #1b2b40;
+      --text: #f1f6fb;
+      --muted: #a9b9c9;
+      --accent: #64e3cc;
+      --border: #344457;
+      --max: 1100px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.65 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+    .wrap { width: min(calc(100% - 40px), var(--max)); margin: auto; }
+    header { position: sticky; top: 0; z-index: 10; background: #0c1521ed; border-bottom: 1px solid var(--border); backdrop-filter: blur(10px); }
+    nav { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { font-size: 1.05rem; font-weight: 800; letter-spacing: .02em; }
+    .brand span { color: var(--accent); }
+    .nav-links { display: flex; gap: 26px; flex-wrap: wrap; }
+    .nav-links a { font-size: .92rem; color: var(--muted); }
+    .nav-links a:hover { color: var(--accent); }
+    .hero { padding: 112px 0 105px; display: grid; grid-template-columns: 1.3fr .7fr; gap: 70px; align-items: center; }
+    .eyebrow { color: var(--accent); font-size: .78rem; font-weight: 750; letter-spacing: .17em; text-transform: uppercase; }
+    h1 { font-size: clamp(2.8rem, 6.2vw, 5.8rem); line-height: 1.05; letter-spacing: -.055em; margin: 16px 0 22px; }
+    h1 em { font-style: normal; color: var(--accent); }
+    .lead { max-width: 600px; color: var(--muted); font-size: 1.13rem; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; padding: 11px 20px; border-radius: 8px; font-weight: 700; font-size: .93rem; border: 1px solid var(--border); }
+    .button.primary { color: #082017; background: var(--accent); border-color: var(--accent); }
+    .button.secondary { background: #1a2a3b; }
+    .button:hover { transform: translateY(-2px); transition: transform .15s; }
+    .hero-art { aspect-ratio: 1 / 1; border: 1px solid #3a6673; border-radius: 24px; position: relative; overflow: hidden; background: radial-gradient(circle at 70% 30%, #326d77 0%, #182d3b 44%, #0b1623 75%); }
+    .hero-art::before { content: ""; position: absolute; inset: 0; opacity: .2; background-image: linear-gradient(#84cbd1 1px, transparent 1px), linear-gradient(90deg, #84cbd1 1px, transparent 1px); background-size: 27px 27px; transform: perspective(350px) rotateX(20deg) scale(1.3); }
+    .schematic { position: absolute; inset: 23%; border: 2px solid var(--accent); border-radius: 25%; transform: rotate(30deg); box-shadow: 0 0 0 26px #64e3cc13, 0 0 0 53px #64e3cc0c; }
+    .schematic::before, .schematic::after { content: ""; position: absolute; inset: 23%; border: 2px solid #a2fff2; border-radius: 50%; }
+    .schematic::after { inset: -17%; border: 1px dashed #a2fff29c; border-radius: 50%; }
+    .art-caption { position: absolute; left: 24px; bottom: 19px; color: #c5f7ee; letter-spacing: .13em; font: 650 .68rem/1.4 monospace; text-transform: uppercase; }
+    section { padding: 70px 0; }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 22px; margin-bottom: 26px; }
+    h2 { font-size: clamp(2rem, 4.2vw, 3rem); line-height: 1.1; letter-spacing: -.035em; margin: 9px 0; }
+    .section-intro { color: var(--muted); max-width: 610px; margin: 0; }
+    .projects { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .project { border: 1px solid var(--border); border-radius: 15px; overflow: hidden; background: var(--surface); }
+    .project-visual { height: 164px; display: flex; align-items: center; justify-content: center; background: repeating-linear-gradient(45deg, #1f3c4b 0, #1f3c4b 2px, #193242 2px, #193242 22px); position: relative; }
+    .project:nth-child(2) .project-visual { background: repeating-linear-gradient(135deg, #244058 0, #244058 2px, #1a3044 2px, #1a3044 22px); }
+    .project:nth-child(3) .project-visual { background: repeating-linear-gradient(90deg, #284148 0, #284148 2px, #1b3138 2px, #1b3138 22px); }
+    .project-visual span { font-size: 3.4rem; font-weight: 850; color: #a2fbe9; opacity: .85; letter-spacing: -.09em; }
+    .project-body { padding: 23px; }
+    .project-number { font: 700 .72rem monospace; text-transform: uppercase; letter-spacing: .12em; color: var(--accent); }
+    h3 { font-size: 1.17rem; margin: 9px 0; letter-spacing: -.02em; }
+    .project p { color: var(--muted); font-size: .94rem; margin: 0 0 16px; }
+    .tags { display: flex; gap: 7px; flex-wrap: wrap; }
+    .tag { border: 1px solid #426073; color: #d4e5ed; padding: 3px 9px; font-size: .72rem; border-radius: 999px; }
+    .about-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 42px; }
+    .about-layout p { color: var(--muted); }
+    .skills { display: flex; flex-wrap: wrap; gap: 9px; align-content: start; }
+    .skill { border: 1px solid var(--border); background: var(--surface-2); border-radius: 8px; padding: 10px 14px; color: #dce8f1; font-size: .9rem; }
+    .contact { border-top: 1px solid var(--border); }
+    .contact-card { border: 1px solid var(--border); border-radius: 18px; background: linear-gradient(120deg, #203d4a, #17283d); padding: 38px; }
+    .contact-card p { color: var(--muted); max-width: 690px; }
+    footer { padding: 25px 0 40px; border-top: 1px solid var(--border); color: var(--muted); font-size: .86rem; }
+    @media (max-width: 850px) {
+      .hero, .about-layout { grid-template-columns: 1fr; gap: 35px; }
+      .hero { padding: 72px 0; }
+      .hero-art { max-width: 430px; width: 100%; }
+      .projects { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .wrap { width: min(calc(100% - 32px), var(--max)); }
+      nav { align-items: start; flex-direction: column; padding: 15px 0; gap: 8px; }
+      .nav-links { gap: 16px; }
+      .projects { grid-template-columns: 1fr; }
+      section { padding: 48px 0; }
+      .section-head { display: block; }
+      .contact-card { padding: 24px; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .button:hover { transform: none; } }
+  </style>
+</head>
+<body>
+  <!-- START HERE: Replace placeholders like "Your Name" and [Your ...] with your own details.
+       Only list skills you actually have; do not publish confidential project materials. -->
+  <header>
+    <nav class="wrap" aria-label="Main navigation">
+      <a class="brand" href="#home">YOUR NAME<span>.</span></a>
+      <div class="nav-links">
+        <a href="#projects">Projects</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <div class="wrap">
+      <section class="hero" id="home">
+        <div>
+          <div class="eyebrow">Undergraduate Engineering Portfolio</div>
+          <h1>Hi, I'm <em>Your Name.</em></h1>
+          <p class="lead">I'm an engineering student interested in [your areas of interest]. I enjoy using engineering fundamentals to design, analyse and improve real-world solutions.</p>
+          <div class="actions">
+            <a class="button primary" href="#projects">Explore my projects &rarr;</a>
+            <a class="button secondary" href="#contact">Get in touch</a>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="schematic"></div>
+          <div class="art-caption">Design / Analyse / Improve</div>
+        </div>
+      </section>
+    </div>
+
+    <section id="projects" style="background:#101d2b">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Selected Work</div>
+            <h2>Engineering Projects</h2>
+          </div>
+          <p class="section-intro">A selection of university and personal projects. Replace the examples below with projects you actually completed.</p>
+        </div>
+        <div class="projects">
+          <article class="project">
+            <div class="project-visual" aria-hidden="true"><span>01</span></div>
+            <div class="project-body">
+              <div class="project-number">Project 01</div>
+              <h3>[Your first project title]</h3>
+              <p>[What problem did you solve? What did you personally design, calculate, build or test? What was the outcome?]</p>
+              <div class="tags"><span class="tag">[Tool used]</span><span class="tag">[Key skill]</span></div>
+            </div>
+          </article>
+          <article class="project">
+            <div class="project-visual" aria-hidden="true"><span>02</span></div>
+            <div class="project-body">
+              <div class="project-number">Project 02</div>
+              <h3>[Your second project title]</h3>
+              <p>[Explain your technical contribution and one important design decision. Add a measurable result if available.]</p>
+              <div class="tags"><span class="tag">[Tool used]</span><span class="tag">[Key skill]</span></div>
+            </div>
+          </article>
+          <article class="project">
+            <div class="project-visual" aria-hidden="true"><span>03</span></div>
+            <div class="project-body">
+              <div class="project-number">Project 03</div>
+              <h3>[Your third project title]</h3>
+              <p>[Describe the analysis, prototype, experiment or teamwork involved, plus the outcome or lessons learned.]</p>
+              <div class="tags"><span class="tag">[Tool used]</span><span class="tag">[Key skill]</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="wrap">
+      <div class="eyebrow">About Me</div>
+      <h2>Curious by design.</h2>
+      <div class="about-layout">
+        <div>
+          <p>I'm currently studying [your degree] at [your university]. My interests include [two or three relevant engineering interests].</p>
+          <p>Through my coursework and projects, I have developed experience in [your actual skills]. I'm seeking [internship / vacation work / undergraduate engineering opportunities] where I can contribute and continue learning.</p>
+        </div>
+        <div>
+          <h3 style="margin-top:0">Technical Skills</h3>
+          <div class="skills">
+            <span class="skill">[CAD software]</span>
+            <span class="skill">[Analysis software]</span>
+            <span class="skill">[Programming language]</span>
+            <span class="skill">[Testing / Manufacturing]</span>
+            <span class="skill">[Other skill]</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="wrap">
+        <div class="contact-card">
+          <div class="eyebrow">Contact</div>
+          <h2>Let's connect.</h2>
+          <p>I'm open to discussing engineering projects, internships and early-career opportunities. Replace the placeholders with your preferred public contact details before publishing.</p>
+          <p><strong>Email:</strong> [your professional email address]</p>
+          <p><strong>LinkedIn:</strong> [your LinkedIn profile URL]</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer><div class="wrap">&copy; <span id="year">2026</span> Your Name. Built with GitHub Pages.</div></footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
