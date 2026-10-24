@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Interactive Mahjong Collection | Yong Sin Ong</title>
+<style>
+:root{color-scheme:light;--navy:#153b5a;--blue:#237fae;--edge:#cce7f5;--muted:#59778b}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#fff;color:var(--navy);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.viewer-layout{padding:18px;display:grid;grid-template-columns:minmax(0,1fr) minmax(238px,262px);gap:20px;align-items:start}
+.stage{position:relative;min-width:0;height:620px;overflow:hidden;border:1px solid #d2e8f4;border-radius:24px;background:radial-gradient(circle at 45% 28%,#fff 0,#f6fcff 53%,#e7f4fc 100%)}
+model-viewer{display:block;width:100%;height:100%;--poster-color:transparent;touch-action:pan-y;outline:none}
+.stage-label{position:absolute;top:15px;left:16px;pointer-events:none;border:1px solid #b9dcf1;background:rgba(255,255,255,.92);border-radius:13px;padding:7px 12px;font-weight:750;font-size:.89rem;color:#1b658f}
+.stage-guide{position:absolute;bottom:16px;left:16px;right:16px;display:flex;gap:9px;align-items:center;justify-content:center;pointer-events:none;background:rgba(255,255,255,.87);border:1px solid #c9e4f1;border-radius:999px;padding:7px 12px;text-align:center;font-size:.83rem;color:#376d8b}
+.stamp{position:absolute;bottom:72px;right:20px;pointer-events:none;font-size:.71rem;letter-spacing:.12em;font-weight:750;color:#528cb0;opacity:.34}
+.controls{display:flex;flex-direction:column;gap:0;min-width:0;padding:2px 0 0}
+.controls h2{font-size:1.22rem;line-height:1.3;margin:0 0 7px;letter-spacing:-.025em}
+.controls .intro{font-size:.85rem;line-height:1.55;color:var(--muted);margin:0 0 17px}
+.tile-picker{display:grid;grid-template-columns:minmax(0,1fr);gap:9px}
+.tile-btn{width:100%;min-width:0;min-height:65px;padding:8px 11px;cursor:pointer;text-align:left;background:#f6fbfe;border:1px solid #c5e5f5;color:#255b7f;border-radius:16px;display:grid;grid-template-columns:46px minmax(0,1fr);align-items:center;gap:11px;font:inherit}
+.tile-btn:hover{border-color:#5ab4e4;background:#edf8ff}
+.tile-btn[aria-pressed="true"]{background:#dff3ff;border-color:#47a7dc;box-shadow:0 0 0 2px rgba(45,141,188,.12)}
+.hanzi{height:46px;width:46px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:12px;background:white;border:1px solid #d1e7f4;font-family:"Noto Sans CJK SC","Microsoft YaHei","PingFang SC",system-ui,sans-serif;font-size:1.22rem;line-height:1;letter-spacing:-.06em;white-space:nowrap;word-break:keep-all;overflow:hidden;color:#28618a}
+.tile-label{display:flex;flex-direction:column;gap:2px;min-width:0}
+.tile-name{font-size:.94rem;font-weight:800;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tile-detail{font-size:.75rem;font-weight:500;color:#637c8f;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.controls-bottom{margin-top:17px;display:grid;grid-template-columns:1fr;gap:9px}
+button.action{width:100%;cursor:pointer;font:inherit;font-size:.87rem;font-weight:750;border:1px solid #bce0f3;border-radius:14px;background:#eaf8ff;color:#176b99;padding:9px 11px;text-align:center}
+button.action:hover{background:#ddf2ff}
+.status{font-size:.77rem;color:#617e90;min-height:1.1em;margin:10px 1px 0}
+button:focus-visible,model-viewer:focus-visible{outline:3px solid #51a9dd;outline-offset:3px}
+@media(max-width:740px){
+ .viewer-layout{padding:11px;grid-template-columns:minmax(0,1fr);gap:13px}
+ .stage{height:410px;border-radius:19px}
+ .controls{padding:0 1px}
+ .controls h2{font-size:1.08rem;margin-bottom:4px}
+ .controls .intro{font-size:.78rem;margin-bottom:10px}
+ .tile-picker{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .tile-btn{min-height:54px;padding:6px 8px;grid-template-columns:38px minmax(0,1fr);gap:8px;border-radius:12px}
+ .hanzi{height:38px;width:38px;border-radius:10px;font-size:1.03rem}
+ .tile-name{font-size:.8rem}
+ .tile-detail{font-size:.68rem}
+ .controls-bottom{margin-top:11px;grid-template-columns:1fr 1fr;gap:8px}
+ button.action{font-size:.78rem;padding:9px 7px;border-radius:12px}
+ .status{margin:8px 2px 0;font-size:.73rem}
+ .stage-guide{font-size:.74rem;left:8px;right:8px}
+ .stamp{bottom:59px;font-size:.58rem}
+}
+@media(max-width:380px){.viewer-layout{padding:8px;gap:9px}.stage{height:375px}.tile-btn{gap:5px;padding:5px}.tile-name{font-size:.75rem}.tile-detail{font-size:.63rem}}
+@media(prefers-reduced-motion:reduce){.tile-btn{transition:none}}
+</style>
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.4.0/model-viewer.min.js"></script>
+</head><body>
+<div class="viewer-layout">
+  <div class="stage">
+    <model-viewer id="mahjong-model" src="models/tile-one-wan.glb" alt="3D SolidWorks model of One Wan Mahjong tile" camera-controls disable-pan auto-rotate rotation-per-second="18deg" shadow-intensity="0.75" shadow-softness="1" exposure="1.05" loading="eager" touch-action="pan-y" interaction-prompt="auto"></model-viewer>
+    <div class="stage-label" id="current-tile">一万 · One Wan</div>
+    <div class="stamp">YONG SIN ONG · CAD VISUALISATION</div>
+    <div class="stage-guide">↻ Drag to rotate <span aria-hidden="true">·</span> Scroll or pinch to zoom</div>
+  </div>
+  <div class="controls"><h2>Pick a tile</h2><p class="intro">Select a Mahjong tile to explore my SolidWorks models in 3D.</p>
+    <div class="tile-picker" role="group" aria-label="Select Mahjong tile">
+      <button class="tile-btn" aria-pressed="true" data-src="models/tile-one-wan.glb" data-name="一万 · One Wan" data-alt="One Wan Mahjong tile"><span class="hanzi" aria-hidden="true">一万</span><span class="tile-label"><span class="tile-name">One Wan</span><span class="tile-detail">Character</span></span></button>
+      <button class="tile-btn" aria-pressed="false" data-src="models/tile-one-tong.glb" data-name="一筒 · One Tong" data-alt="One Tong Mahjong tile"><span class="hanzi" aria-hidden="true">一筒</span><span class="tile-label"><span class="tile-name">One Tong</span><span class="tile-detail">Circle</span></span></button>
+      <button class="tile-btn" aria-pressed="false" data-src="models/tile-three-tiao.glb" data-name="三条 · Three Tiao" data-alt="Three Tiao Mahjong tile"><span class="hanzi" aria-hidden="true">三条</span><span class="tile-label"><span class="tile-name">Three Tiao</span><span class="tile-detail">Bamboo</span></span></button>
+      <button class="tile-btn" aria-pressed="false" data-src="models/tile-five-wan.glb" data-name="五万 · Five Wan" data-alt="Five Wan Mahjong tile"><span class="hanzi" aria-hidden="true">五万</span><span class="tile-label"><span class="tile-name">Five Wan</span><span class="tile-detail">Character</span></span></button>
+      <button class="tile-btn" aria-pressed="false" data-src="models/tile-north.glb" data-name="北 · North Wind" data-alt="North Wind Mahjong tile"><span class="hanzi" aria-hidden="true">北</span><span class="tile-label"><span class="tile-name">North Wind</span><span class="tile-detail">Wind</span></span></button>
+    </div>
+    <div class="controls-bottom"><button type="button" class="action" id="spin-toggle" aria-pressed="true">Pause rotation</button><button type="button" class="action" id="reset-view">Reset view</button></div>
+    <p class="status" id="model-status" role="status" aria-live="polite">Loading interactive model…</p>
+  </div>
+</div>
+<script>
+(() => {
+  const viewer=document.getElementById('mahjong-model');
+  const status=document.getElementById('model-status');
+  const label=document.getElementById('current-tile');
+  const spin=document.getElementById('spin-toggle');
+  const buttons=[...document.querySelectorAll('.tile-btn')];
+  const base=new URL('./',location.href);
+  buttons.forEach(button=>button.addEventListener('click',()=>{
+    if(button.getAttribute('aria-pressed')==='true')return;
+    buttons.forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+    viewer.src=new URL(button.dataset.src,base).href;
+    viewer.alt='3D SolidWorks model of '+button.dataset.alt;
+    label.textContent=button.dataset.name;
+    status.textContent='Loading '+button.dataset.alt+'…';
+  }));
+  viewer.addEventListener('load',()=>{status.textContent='Ready to explore';});
+  viewer.addEventListener('error',()=>{status.textContent='Model unavailable. Please reload the page or try another tile.';});
+  spin.addEventListener('click',()=>{
+    const isRotating=viewer.hasAttribute('auto-rotate');
+    if(isRotating)viewer.removeAttribute('auto-rotate');else viewer.setAttribute('auto-rotate','');
+    spin.textContent=isRotating?'Resume rotation':'Pause rotation';
+    spin.setAttribute('aria-pressed',String(!isRotating));
+  });
+  document.getElementById('reset-view').addEventListener('click',()=>{
+    if(typeof viewer.jumpCameraToGoal==='function'){
+      viewer.cameraOrbit='auto auto auto';
+      viewer.fieldOfView='auto';
+      viewer.jumpCameraToGoal();
+    }
+  });
+  // Removing a normal context menu is only a UI choice; it is NOT file protection.
+  viewer.addEventListener('contextmenu',e=>e.preventDefault());
+  setTimeout(()=>{
+    if(typeof customElements.get('model-viewer')==='undefined')
+      status.textContent='3D viewer could not load. Check internet access and refresh.';
+  },9000);
+})();
+</script>
+</body></html>
